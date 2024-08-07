@@ -377,7 +377,8 @@ static void parse_float(const char* ptr, size_t len, unsigned long long* w,
         s = 1 + Luinteger10(ptr + r + 1, len - r - 1);
     u = Lsuffix(ptr + r + s, len - r - s);
 
-    unsigned long long W = 0, Q = 0;
+    unsigned long long W = 0;
+    long long Q = 0;
     if (u > 1) {
         int qov = stonn(ptr + r + s + 1, u - 1, 10, &Q);
         if (qov < 0) {

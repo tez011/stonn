@@ -45,7 +45,7 @@ add_test(NAME stonn COMMAND $<TARGET_FILE:stonn.test>)
 target_link_libraries(stonn.test stonn unity m)
 if (STONN_COV_OK)
     add_library(envcoverage INTERFACE)
-    target_compile_options(envcoverage INTERFACE "-fprofile-arcs" "-ftest-coverage" "-fprofile-abs-path")
+    target_compile_options(envcoverage INTERFACE "-fprofile-arcs" "-ftest-coverage")
     target_link_options(envcoverage INTERFACE "--coverage")
     target_link_libraries(stonn envcoverage)
     target_link_libraries(stonn.test envcoverage)
@@ -56,7 +56,7 @@ if (STONN_COV_OK)
         COMMAND ${LCOV} -c -i -o ${covinfo} -b ${CMAKE_BINARY_DIR} -d ${CMAKE_BINARY_DIR}
         COMMAND ${CMAKE_CTEST_COMMAND}
         COMMAND ${LCOV} -c -o ${covinfo} -d ${CMAKE_BINARY_DIR} -b ${CMAKE_BINARY_DIR} --gcov-tool ${GCOV}
-        COMMAND ${LCOV} -r ${covinfo} -o ${covinfo} ${CMAKE_SOURCE_DIR}/test/*
+        COMMAND ${LCOV} -r ${covinfo} -o ${covinfo} ${CMAKE_SOURCE_DIR}/test/*.c
         COMMAND ${GENHTML} ${covinfo} -output ${CMAKE_BINARY_DIR}/coverage)
 endif()
 
