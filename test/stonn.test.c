@@ -60,9 +60,32 @@ void test_stounn(void)
         TEST_ASSERT_EQUAL(expected, actual);
     }
 
-    elen = snprintf(pbuf, 256, "111111110111111111111111");
+    elen = snprintf(pbuf, 100, "111111110111111111111111");
     stounn(pbuf, elen, 2, &actual);
     TEST_ASSERT_EQUAL(0b111111110111111111111111, actual);
+}
+
+void test_stonf(void)
+{
+    float expected, actual;
+    int elen, eexp;
+    char pbuf[256];
+
+    elen = snprintf(pbuf, 256, "7205.7e+6");
+    stonf(pbuf, elen, &actual);
+    TEST_ASSERT_EQUAL_FLOAT(7205.7e+6f, actual);
+
+    elen = snprintf(pbuf, 256, "7205.7e-6");
+    stonf(pbuf, elen, &actual);
+    TEST_ASSERT_EQUAL_FLOAT(7205.7e-6f, actual);
+
+    elen = snprintf(pbuf, 256, "%f", 7.2057594037927933e+16);
+    stonf(pbuf, elen, &actual);
+    TEST_ASSERT_EQUAL_FLOAT(7.2057594037927933e+16f, actual);
+
+    elen = snprintf(pbuf, 256, "%f", -7.2057594037927933e+16);
+    stonf(pbuf, elen, &actual);
+    TEST_ASSERT_EQUAL_FLOAT(-7.2057594037927933e+16f, actual);
 }
 
 void test_stonlf(void)
@@ -89,7 +112,7 @@ void test_stonlf(void)
         TEST_ASSERT_EQUAL_FLOAT(expected * pow(10.0, eexp), actual);
     }
 
-    elen = snprintf(pbuf, 256, "7.2057594037927933e+16", expected);
+    elen = snprintf(pbuf, 256, "7.2057594037927933e+16");
     stonlf(pbuf, elen, &actual);
     TEST_ASSERT_EQUAL_FLOAT(7.2057594037927933e+16, actual);
 
@@ -111,6 +134,7 @@ int main(void)
     UNITY_BEGIN();
     RUN_TEST(test_stonn);
     RUN_TEST(test_stounn);
+    RUN_TEST(test_stonf);
     RUN_TEST(test_stonlf);
     return UNITY_END();
 }
